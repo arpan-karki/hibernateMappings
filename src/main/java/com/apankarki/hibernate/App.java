@@ -12,7 +12,7 @@ import antlr.collections.List;
 public class App {
 
 	public static void main(String[] args) {
-		SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml")
+		SessionFactory sessionFactory = new Configuration().configure("hibernate1.cfg.xml")
 				.addAnnotatedClass(Student.class).buildSessionFactory();
 
 		Session session = sessionFactory.getCurrentSession();
@@ -52,6 +52,21 @@ public class App {
 			testUpdateStudent.setEmail("test@email.com");
 			session.save(testUpdateStudent);
 			session.getTransaction().commit();	
+			
+			
+			
+			session =  sessionFactory.getCurrentSession();
+			session.beginTransaction();
+			Student tempstudent2 =  session.get(Student.class, 1);
+			tempstudent2.setLastName("updated student");
+			session.getTransaction().commit();
+			
+			session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
+			session.delete(session.get(Student.class, 5));
+			session.getTransaction().commit();
+			
+			
 			
 			
 		} 

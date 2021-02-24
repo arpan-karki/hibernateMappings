@@ -1,11 +1,20 @@
 package com.arpankarki.hibernate.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "student")
@@ -22,8 +31,21 @@ public class Student {
 	@Column(name = "last_name")
 	private String lastName;
 
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
+
 	@Column(name = "email")
 	private String email;
+
+	@ManyToMany()
+	@Cascade({ CascadeType.SAVE_UPDATE})
+	@JoinTable(name = "course_student", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	private List<Course> courses ;
 
 	public Student() {
 
@@ -69,7 +91,4 @@ public class Student {
 		return id;
 	}
 
-
-
-	
 }
